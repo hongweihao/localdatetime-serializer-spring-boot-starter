@@ -13,7 +13,13 @@ public class OffsetDateTimeToLocalDateTimeDeserializer extends JsonDeserializer<
     @Override
     public LocalDateTime deserialize(JsonParser p, DeserializationContext context) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
-        OffsetDateTime offsetDateTime = OffsetDateTime.parse(p.getText(), formatter);
-        return offsetDateTime.toLocalDateTime();
+        try {
+            OffsetDateTime offsetDateTime = OffsetDateTime.parse(p.getText(), formatter);
+            return offsetDateTime.toLocalDateTime();
+        } catch (Exception e) {
+            return LocalDateTime.parse(p.getText());
+        }
+
+
     }
 }
